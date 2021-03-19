@@ -1,3 +1,4 @@
+const authorise = require("./auth");
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -7,7 +8,7 @@ var logger = require("morgan");
 const database = require("./firebase").database;
 var indexRouter = require("./routes/index");
 var { usersRouter, login, signup } = require("./routes/users");
-var todoRouter = require('./routes/todo');
+var todoRouter = require("./routes/todo");
 
 var app = express();
 
@@ -21,9 +22,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/todo', todoRouter);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/todo", todoRouter);
 
 // error handler
 app.use(function (err, req, res, next) {

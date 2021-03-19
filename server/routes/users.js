@@ -29,7 +29,6 @@ function login(req, res) {
             return res.json({ token });
         })
         .catch((err) => {
-            console.err(err);
             return res.status(403).json({ message: "Either your email or password is incorrect" });
         });
 }
