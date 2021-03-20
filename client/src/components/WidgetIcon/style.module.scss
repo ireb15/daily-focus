@@ -5,21 +5,20 @@
     height: 350px;
 }
 
-
 .cardContent {
     text-align: center;
-    font-family:"Ropa Sans";
+    font-family: "Ropa Sans";
 }
 
-.media{
+.media {
     display: block;
-    max-width:250px;
-    max-height:250px;
+    max-width: 250px;
+    max-height: 250px;
     width: auto;
     height: auto;
 }
 
-.selectedCard{
+.selectedCard {
     box-sizing: border-box;
-    border: 3px solid #30A0F5;
+    border: 3px solid #30a0f5;
 }
