@@ -1,6 +1,9 @@
-import { Grid, makeStyles, Paper } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import SelectedWidgetsModal from "../SelectWidgetsModal";
 import styles from "./style.module.scss";
+
+import Timer from "../Timer";
+import ToDoList from "../ToDoList";
 
 const useStyles = makeStyles({
     grid: {
@@ -19,11 +22,9 @@ function Body({ selectedWidgets, setSelectedWidgets }) {
         <div className={styles.gridContainer}>
             {selectedWidgets && selectedWidgets.length ? (
                 <Grid container justify="center" spacing={4} className={classes.grid}>
-                    {selectedWidgets.map((value) => (
-                        <Grid key={value} item xs={4}>
-                            <Paper>{value}</Paper>
-                        </Grid>
-                    ))}
+                    {selectedWidgets.includes("To Do List") && <ToDoList />}
+                    {selectedWidgets.includes("Calendar") && <div>Calendar</div>}
+                    {selectedWidgets.includes("Timer") && <Timer />}
                 </Grid>
             ) : (
                 <div className={styles.noWidgetContainer}>
