@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 import LandingPage from "./components/LandingPage";
+import LoginPage from "./components/LoginPage";
 import Header from "./components/Header";
 import "./App.css";
 
@@ -15,6 +16,10 @@ function App() {
 
                 <Route exact path="/signup">
                     <LandingPage />
+                </Route>
+
+                <Route exact path="/login">
+                    <LoginPage />
                 </Route>
 
                 <Route exact path="/home">
