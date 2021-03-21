@@ -22,6 +22,10 @@ exports[`it renders correctly 1`] = `
       path="/home"
     >
       <Header />
+      <Body
+        selectedWidgets={Array []}
+        setSelectedWidgets={[Function]}
+      />
     </Route>
   </Switch>
 </BrowserRouter>
