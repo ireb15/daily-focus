@@ -6,20 +6,28 @@ const saveListToStorage = (list) => {
     localStorage.setItem("todoList", listJson);
 };
 
+const saveTaskPointsToStorage = (taskPoints) => {
+    localStorage.setItem("taskPoints", taskPoints);
+};
+
 const sortOverallTodosByDate = (overallTodos) => {
     let sorted = {};
-    Object.keys(overallTodos).sort().forEach(date => {
-        sorted[date] = overallTodos[date];
-    });
+    Object.keys(overallTodos)
+        .sort()
+        .forEach((date) => {
+            sorted[date] = overallTodos[date];
+        });
     return sorted;
 };
 
-const sortSpecificTodoListByTime = (todos) => todos.sort((thisTodo, otherTodo) => thisTodo.time.localeCompare(otherTodo.time));
+const sortSpecificTodoListByTime = (todos) =>
+    todos.sort((thisTodo, otherTodo) => thisTodo.time.localeCompare(otherTodo.time));
 
 const newTodaysDate = moment().format("YYYY-MM-D");
 
 function useTodosState(initialTodos, setIsAddingItem) {
     const [todoList, setTodoList] = useState(initialTodos);
+    const [taskPoints, setTaskPoints] = useState(0);
 
     useEffect(() => {
         const savedTodoListJson = localStorage.getItem("todoList");
@@ -33,6 +41,13 @@ function useTodosState(initialTodos, setIsAddingItem) {
             savedTodoList[newTodaysDate] = [];
             setTodoList(savedTodoList);
         }
+
+        const savedPoints = localStorage.getItem("taskPoints");
+        if (savedPoints) {
+            setTaskPoints(parseInt(savedPoints));
+        } else {
+            setTaskPoints(0);
+        }
     }, []);
 
     return {
@@ -42,16 +57,16 @@ function useTodosState(initialTodos, setIsAddingItem) {
                 checked: false,
                 time,
                 title,
-                details
+                details,
             };
             const currentListOnThatDate = todoList[date] || [];
             const newList = [...currentListOnThatDate, newTaskObject];
             sortSpecificTodoListByTime(newList);
-    
-            let todoListCopy = {...todoList};
+
+            let todoListCopy = { ...todoList };
             todoListCopy[date] = newList;
             todoListCopy = sortOverallTodosByDate(todoListCopy);
-    
+
             setTodoList(todoListCopy);
             setIsAddingItem(false);
             saveListToStorage(todoListCopy);
@@ -59,7 +74,7 @@ function useTodosState(initialTodos, setIsAddingItem) {
         deleteTodoItem: (index, date) => {
             const newListOnThatDay = [...todoList[date]];
             newListOnThatDay.splice(index, 1);
-            const newList = {...todoList};
+            const newList = { ...todoList };
             newList[date] = newListOnThatDay;
             setTodoList(newList);
             saveListToStorage(newList);
@@ -70,19 +85,33 @@ function useTodosState(initialTodos, setIsAddingItem) {
             if (field === "time") {
                 sortSpecificTodoListByTime(newListOnThatDay);
             }
-            const newList = {...todoList};
+            const newList = { ...todoList };
             newList[date] = newListOnThatDay;
             setTodoList(newList);
             saveListToStorage(newList);
         },
         toggleCheck: (index, date) => {
             const newListOnThatDay = [...todoList[date]];
+            let newTaskPoints = taskPoints;
+            if (!newListOnThatDay[index].checked) {
+                newTaskPoints++;
+            } else {
+                newTaskPoints = newTaskPoints ? newTaskPoints - 1 : 0; // if unchecking, decrement task points to a minimum of 0
+            }
             newListOnThatDay[index].checked = !newListOnThatDay[index].checked;
-            const newList = {...todoList};
+            const newList = { ...todoList };
             newList[date] = newListOnThatDay;
             setTodoList(newList);
             saveListToStorage(newList);
-        }
+            setTaskPoints(newTaskPoints);
+            saveTaskPointsToStorage(newTaskPoints);
+        },
+        taskPoints,
+        spendPoint: () => {
+            const newTaskPoints = taskPoints ? taskPoints - 1 : 0;
+            setTaskPoints(newTaskPoints);
+            saveTaskPointsToStorage(newTaskPoints);
+        },
     };
 }
 

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders correctly 1`] = `
+<div
+  className="app"
+>
+  <div
+    className="appHeader"
+  >
+    Grow your plant
+  </div>
+  <div>
+    Tasks Completed: undefined
+    <Plant
+      plantImage="https://user-images.githubusercontent.com/73207848/111860287-74fbbd00-89ab-11eb-808b-11a7216f1bb5.png"
+    />
+    <ControlButton
+      control="water"
+      handlePlantGrowth={[Function]}
+      image="https://user-images.githubusercontent.com/73207848/111860325-a7a5b580-89ab-11eb-936d-bbc974cf89cf.png"
+      points={1}
+    />
+    <UserFeedback
+      feedbackText="When you finish a task, you will get water so you can water your tree! Try to click the watering can."
+      progress={0}
+    />
+    <div />
+  </div>
+</div>
+`;
