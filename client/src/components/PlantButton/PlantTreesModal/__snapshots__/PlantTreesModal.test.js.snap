@@ -12,12 +12,12 @@ exports[`it renders correctly 1`] = `
   <div>
     Tasks Completed: undefined
     <Plant
-      plantImage="https://user-images.githubusercontent.com/73207848/111860287-74fbbd00-89ab-11eb-808b-11a7216f1bb5.png"
+      plantImage="tree0.png"
     />
     <ControlButton
       control="water"
       handlePlantGrowth={[Function]}
-      image="https://user-images.githubusercontent.com/73207848/111860325-a7a5b580-89ab-11eb-936d-bbc974cf89cf.png"
+      image="wateringCan.png"
       points={1}
     />
     <UserFeedback

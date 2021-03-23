@@ -27,14 +27,7 @@ exports[`it renders correctly 1`] = `
       exact={true}
       path="/home"
     >
-      <Header
-        selectedWidgets={Array []}
-        setSelectedWidgets={[Function]}
-      />
-      <Body
-        selectedWidgets={Array []}
-        setSelectedWidgets={[Function]}
-      />
+      <HomePage />
     </Route>
   </Switch>
 </BrowserRouter>
