@@ -3,9 +3,9 @@ import Calendar from "react-calendar";
 import EventView from "./EventView";
 import NewEvent from "./NewEvent";
 import initialEvents from "./initial-events.js";
-import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import styles from "./style.module.scss";
 import "./Calendar.scss";
 
 const compareDate = (day1, day2) => {
@@ -17,23 +17,8 @@ const compareDate = (day1, day2) => {
 };
 
 const gridStyle = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        width: "350px",
-        maxWidth: "100%",
-        background: "white",
-        border: "1px solid #a0a096",
-        borderRadius: "20px",
-        boxShadow: "0px 4px 16px 8px rgba(0, 0, 0, 0.25)",
-        padding: "0px",
-    },
-    demo: {
-        backgroundColor: theme.palette.background.paper,
-    },
-
     circle: {
-        width: "6px",
-        height: "6px",
+        width: "8px",
     },
 }));
 
@@ -81,15 +66,11 @@ function CalendarWidget() {
     };
 
     return (
-        <Grid className={gridStyles.root}>
-            <Grid>
-                <Calendar onClickDay={(value) => setSelected(value)} tileContent={tileContent} />
-            </Grid>
-            <Grid>
-                <EventView selected={selected} events={events} onRemoveEvent={onRemoveEvent} />
-                <NewEvent onAddNewEvent={onAddNewEvent} />
-            </Grid>
-        </Grid>
+        <div className={styles.container}>
+            <Calendar onClickDay={(value) => setSelected(value)} tileContent={tileContent} />
+            <EventView selected={selected} events={events} onRemoveEvent={onRemoveEvent} />
+            <NewEvent onAddNewEvent={onAddNewEvent} />
+        </div>
     );
 }
 

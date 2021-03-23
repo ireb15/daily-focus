@@ -2,7 +2,7 @@
 
 exports[`Renders no widgets found message 1`] = `
 <div
-  className="gridContainer"
+  className="container"
 >
   <div
     className="noWidgetContainer"
@@ -17,7 +17,7 @@ exports[`Renders no widgets found message 1`] = `
     >
       <div>
         <button
-          className="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-3 MuiButton-containedPrimary"
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-1 MuiButton-containedPrimary"
           disabled={false}
           onBlur={[Function]}
           onClick={[Function]}

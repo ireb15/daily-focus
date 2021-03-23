@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
+import styles from "./style.module.scss";
 
 function NewEvent({ onAddNewEvent }) {
     const [title, setTitle] = useState("");
@@ -29,10 +30,16 @@ function NewEvent({ onAddNewEvent }) {
 
     const inputStyle = makeStyles((theme) => ({
         input: {
-            "& > *": {
-                margin: theme.spacing(1),
-                width: "20ch",
-                height: "5ch",
+            "width": "308px",
+            "margin-bottom": "16px",
+
+            "& .MuiOutlinedInput-root": {
+                backgroundColor: "none",
+            },
+            "& .MuiInputLabel-root": {
+                fontSize: "1.25rem",
+                color: "#7d7d7d",
+                fontFamily: "'Ropa Sans', sans-serif",
             },
         },
     }));
@@ -41,8 +48,8 @@ function NewEvent({ onAddNewEvent }) {
     const classes = inputStyle();
 
     return (
-        <div>
-            <div>
+        <div className={styles.container}>
+            <div className={styles.form}>
                 <TextField
                     className={classes.input}
                     label="Title"

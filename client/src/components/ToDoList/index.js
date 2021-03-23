@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
-import { Card, CardHeader, MenuItem, Select, makeStyles } from "@material-ui/core";
+import { CardHeader, MenuItem, Select, makeStyles } from "@material-ui/core";
+import styles from "./style.module.scss";
 
 import AddToDo from "./AddToDo";
 import UpcomingToDo from "./UpcomingToDo";
@@ -20,17 +21,25 @@ const getUpcomingToDoItems = (currentToDoList, today) => {
 
 const useStyles = makeStyles({
     container: {
+        borderRadius: "25px",
         margin: "10px",
-        width: "25%",
+        width: "100%",
     },
     listContainer: {
         display: "flex",
         flexDirection: "column",
     },
     todoListTitle: {
-        textAlign: "center",
-        backgroundColor: "#30A0F5",
-        marginBottom: "1.5vh",
+        "borderRadius": "25px 25px 0 0",
+        "height": "16px",
+        "textAlign": "center",
+        "backgroundColor": "#30A0F5",
+        "marginBottom": "1.5vh",
+
+        "& .MuiInputBase-root": {
+            fontSize: "24px",
+            fontFamily: "'Ropa Sans', sans-serif",
+        },
     },
     todoListTitleSelect: {
         color: "white",
@@ -56,11 +65,11 @@ function ToDoList() {
     const classes = useStyles();
 
     return (
-        <Card className={classes.container}>
+        <div className={styles.container}>
             {isAddingItem ? (
                 <AddToDo cancelClicked={() => setIsAddingItem(false)} addClicked={addTodoItem} />
             ) : (
-                <div>
+                <div className={styles.list}>
                     <CardHeader
                         title={
                             <Select
@@ -102,7 +111,7 @@ function ToDoList() {
                     )}
                 </div>
             )}
-        </Card>
+        </div>
     );
 }
 

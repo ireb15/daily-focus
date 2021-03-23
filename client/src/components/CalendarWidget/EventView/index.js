@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
+import styles from "./style.module.scss";
 
 const months = [
     "January",
@@ -55,8 +55,14 @@ const gridStyle = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     title: {
-        margin: theme.spacing(4, 0, 2),
         fontFamily: "'Ropa Sans'",
+    },
+
+    listItem: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: "8px",
+        padding: 0,
     },
 
     buttonStyle: {
@@ -73,15 +79,15 @@ function EventView({ selected, events, onRemoveEvent }) {
     const gridStyles = gridStyle();
 
     return (
-        <Grid className={gridStyles.root} item xs={12} md={6}>
-            <Typography variant="h5" className={gridStyles.title}>
+        <div className={styles.container}>
+            <div className={styles.heading}>
                 {days[selected.getDay()]} {selected.getDate()} {months[selected.getMonth()]},{" "}
                 {selected.getFullYear()}
-            </Typography>
+            </div>
             <List>
                 {events.map((event, index) =>
                     compareDate(selected, event.date) ? (
-                        <ListItem key={index}>
+                        <ListItem className={gridStyles.listItem} key={index}>
                             <Typography variant="h6" className={gridStyles.title}>
                                 {formatTime(event.date)} {event.title}
                             </Typography>
@@ -100,7 +106,7 @@ function EventView({ selected, events, onRemoveEvent }) {
                     ) : null
                 )}
             </List>
-        </Grid>
+        </div>
     );
 }
 

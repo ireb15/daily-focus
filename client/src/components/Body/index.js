@@ -1,31 +1,31 @@
-import { Grid, makeStyles } from "@material-ui/core";
 import SelectedWidgetsModal from "../SelectWidgetsModal";
 import styles from "./style.module.scss";
 
+import CalendarWidget from "../CalendarWidget";
 import Timer from "../Timer";
 import ToDoList from "../ToDoList";
 
-const useStyles = makeStyles({
-    grid: {
-        width: "80%",
-    },
-    label: {
-        textTransform: "capitalize",
-        fontSize: "1.25rem",
-    },
-});
-
 function Body({ selectedWidgets, setSelectedWidgets }) {
-    const classes = useStyles();
-
     return (
-        <div className={styles.gridContainer}>
+        <div className={styles.container}>
             {selectedWidgets && selectedWidgets.length ? (
-                <Grid container justify="center" spacing={4} className={classes.grid}>
-                    {selectedWidgets.includes("To Do List") && <ToDoList />}
-                    {selectedWidgets.includes("Calendar") && <div>Calendar</div>}
-                    {selectedWidgets.includes("Timer") && <Timer />}
-                </Grid>
+                <div className={styles.grid}>
+                    {selectedWidgets.includes("To Do List") && (
+                        <div className={styles.widget}>
+                            <ToDoList />
+                        </div>
+                    )}
+                    {selectedWidgets.includes("Calendar") && (
+                        <div className={styles.widget}>
+                            <CalendarWidget />
+                        </div>
+                    )}
+                    {selectedWidgets.includes("Timer") && (
+                        <div className={styles.widget}>
+                            <Timer />
+                        </div>
+                    )}
+                </div>
             ) : (
                 <div className={styles.noWidgetContainer}>
                     <div className={styles.message}>Your focus page is empty</div>

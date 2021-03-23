@@ -6,32 +6,34 @@ import styles from "./style.module.scss";
 
 const useStyles = makeStyles({
     todoListTitle: {
+        borderRadius: "25px 25px 0 0",
+        fontSize: "24px",
+        height: "16px",
+        width: "308px",
         textAlign: "center",
         backgroundColor: "#30A0F5",
         color: "white",
         marginBottom: "1.5vh",
-        paddingTop: "2.3vh",
-        paddingBottom: "2.3vh"
     },
     todoInputTextField: {
         [`& fieldset`]: {
-            borderRadius: "40px"
-        }
+            borderRadius: "40px",
+        },
     },
     primaryButton: {
         backgroundColor: "#30A0F5",
         color: "white",
-        borderRadius: "20px" 
+        borderRadius: "20px",
     },
     cardActions: {
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
     },
     cancelButton: {
         backgroundColor: "white",
         color: "black",
         borderColor: "#30A0F5",
-        borderRadius: "20px"
-    }
+        borderRadius: "20px",
+    },
 });
 
 function AddToDo({ cancelClicked, addClicked }) {
@@ -46,18 +48,14 @@ function AddToDo({ cancelClicked, addClicked }) {
     const classes = useStyles();
 
     return (
-        <div>
-            <CardHeader 
-                title="Add Task"
-                className={classes.todoListTitle}
-                disableTypography
-            />
-            <form>
+        <div className={styles.container}>
+            <CardHeader title="Add Task" className={classes.todoListTitle} disableTypography />
+            <form className={styles.form}>
                 <div className={styles.todoAddField}>
                     <TextField
                         className={classes.todoInputTextField}
                         fullWidth
-                        variant="outlined" 
+                        variant="outlined"
                         type="date"
                         label="Date"
                         defaultValue={currentDate}
@@ -65,7 +63,7 @@ function AddToDo({ cancelClicked, addClicked }) {
                     />
                 </div>
                 <div className={styles.todoAddField}>
-                    <TextField 
+                    <TextField
                         fullWidth
                         className={classes.todoInputTextField}
                         variant="outlined"
@@ -76,11 +74,11 @@ function AddToDo({ cancelClicked, addClicked }) {
                     />
                 </div>
                 <div className={styles.todoAddField}>
-                    <TextField 
+                    <TextField
                         fullWidth
                         className={classes.todoInputTextField}
                         variant="outlined"
-                        label="Title" 
+                        label="Title"
                         onChange={(e) => setCurrentTitle(e.target.value)}
                     />
                 </div>
@@ -90,18 +88,19 @@ function AddToDo({ cancelClicked, addClicked }) {
                         className={classes.todoInputTextField}
                         variant="outlined"
                         label="Details"
-                        onChange={(e) => setCurrentDetails(e.target.value)} 
-                        multiline 
+                        onChange={(e) => setCurrentDetails(e.target.value)}
+                        multiline
                     />
                 </div>
-        
             </form>
             <CardActions className={classes.cardActions}>
-                <Button 
+                <Button
                     className={classes.primaryButton}
-                    color="primary" 
-                    variant="contained" 
-                    onClick={() => addClicked(selectedDate, selectedTime, currentTitle, currentDetails)}
+                    color="primary"
+                    variant="contained"
+                    onClick={() =>
+                        addClicked(selectedDate, selectedTime, currentTitle, currentDetails)
+                    }
                 >
                     Add Task
                 </Button>
@@ -115,7 +114,7 @@ function AddToDo({ cancelClicked, addClicked }) {
 
 AddToDo.propTypes = {
     cancelClicked: PropTypes.func.isRequired,
-    addClicked: PropTypes.func.isRequired
+    addClicked: PropTypes.func.isRequired,
 };
 
 export default AddToDo;
