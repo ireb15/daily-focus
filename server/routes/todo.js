@@ -176,11 +176,46 @@ router.put("/", async function(req, res, next) {
 
 
 /* DELETE todo list entry*/
-router.delete("/", function(req, res, next) {
-    // TODO implementation deleting entry from our database
+router.delete("/", async function (req, res, next) {
+    let userId = await authorise(req);
 
-    res.send('delete todo list entry'); // TODO change response after
+    if (userId === "") {
+        return res.status(401).send("Unauthorised user.");
+    }
+
+    var originData,
+        updatedArray = [];
+
+    // Retrieve array of entries for user from firebase DB
+    await database
+        .ref()
+        .child(userId)
+        .child("todolist")
+        .get()
+        .then((snapshot) => {
+            // Only accept if array exists
+            if (snapshot.exists()) {
+                // Get the current data from the database
+                originData = snapshot.val();
+                // Filter the data from the origin data based on the entry id
+                updatedArray = originData.filter((entry) => entry.entry_id != req.body.entry_id);
+            } else {
+                // No data available
+                res.status(200).send("No data available");
+                return;
+            }
+        })
+        .catch((error) => {
+            res.send(error);
+            return;
+        });
+
+    // Update the firebase with the updated array
+    await database.ref().child(userId).child("todolist").set(updatedArray);
+
+    res.status(200).send("Successful deletion");
 });
+
 
 module.exports = router;
 
