@@ -2,7 +2,8 @@ const { database } = require("../firebase");
 const authorise = require("../auth");
 var express = require('express');
 var router = express.Router();
-var uuid = require('uuid');
+
+var uuid = require("uuid");
 
 // Helper method: Used to sort entryArray by GET API.
 function sortByDateTime(a, b) {
@@ -82,7 +83,7 @@ router.get("/", async function (req, res, next) {
 
 
 /* POST new todo entry */
-router.post('/', async function(req, res, next) {
+router.post("/", async function(req, res, next) {
 
     let entryArray = [];
     let newEntry = req.body;
@@ -128,19 +129,61 @@ router.post('/', async function(req, res, next) {
 
 
 /* PUT entry update */
-router.put('/', function(req, res, next) {
-    // TODO implementation for updating entry in database
+router.put("/", async function(req, res, next) {
 
-    res.send('put entry update into database'); // TODO change response after
+    let userId = await authorise(req);
+    let entryArray = [];
+
+    if (userId === "") {
+        return res.status(401).send("Unauthorised user.");
+    }
+
+    // Retrieve array of entries for user from firebase DB
+    await database
+        .ref()
+        .child(userId)
+        .child("todolist")
+        .get()
+        .then((snapshot) => {
+            // Only accept if array exists and contains entries
+            if (snapshot.exists() && snapshot.val().length != 0) {
+                entryArray = snapshot.val();
+            } else {
+                res.status(400).send("No entries for user");
+                return;
+            }
+        })
+        .catch((error) => {
+            res.send(error);
+            return;
+        });
+
+    
+    // Go through current array to find and update the entry that was changed
+    entryArray.forEach((element) => {
+        if (element.entry_id == req.body.entry_id) {
+            for (var propt in req.body) {
+                element[propt] = req.body[propt];
+            }
+        }
+    });
+
+    // Write this updated list back to the database.
+    await newFunction(userId).child("todolist").set(entryArray);
+
+    res.status(200).send("Successful Update");
 });
 
 
 /* DELETE todo list entry*/
-router.delete('/', function(req, res, next) {
+router.delete("/", function(req, res, next) {
     // TODO implementation deleting entry from our database
 
     res.send('delete todo list entry'); // TODO change response after
 });
 
-
 module.exports = router;
+
+function newFunction(userId) {
+    return database.ref().child(userId);
+}
