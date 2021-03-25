@@ -1,11 +1,6 @@
 const request = require("supertest");
-const app = require("../../app");
-const database = require("./../../firebase").database;
-
-let NZGmt = 13;
-let todaysDate = new Date();
-todaysDate.setHours(todaysDate.getHours() + NZGmt);
-todaysDate = todaysDate.toISOString().slice(0, 10);
+const app = require("../app");
+const database = require("../firebase").database;
 
 const expectedToDoListData = 
             {
@@ -18,15 +13,15 @@ const expectedToDoListData =
             };
 
 
-jest.mock("./../../firebase", () => {
-    const mockDatabase = require("../../test_utils/mocks/mockDatabase");
+jest.mock("../firebase", () => {
+    const mockDatabase = require("../mocks/mockDatabase");
     return {
         database: mockDatabase,
     };
 });
 
 
-jest.mock("../../auth", () => {
+jest.mock("../utils/auth", () => {
     return jest.fn(() => Promise.resolve("mockValidToken"));
 });
 

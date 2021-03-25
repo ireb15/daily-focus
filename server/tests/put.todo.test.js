@@ -1,12 +1,9 @@
 const request = require("supertest");
 const app = require("../app");
-const database = require("./../firebase").database;
+const database = require("../firebase").database;
+const getTodaysDate = require("../utils/date-helper");
 
-// Getting today's date
-let NZGmt = 13;
-let todaysDate = new Date();
-todaysDate.setHours(todaysDate.getHours() + NZGmt);
-todaysDate = todaysDate.toISOString().slice(0, 10);
+let todaysDate = getTodaysDate()
 
 const expectedToDoListData = [
     {
@@ -44,15 +41,15 @@ const expectedToDoListData = [
 ];
 
 // Jest to test on mockDatabase
-jest.mock("./../firebase", () => {
-    const mockDatabase = require("../test_utils/mocks/mockDatabase");
+jest.mock("../firebase", () => {
+    const mockDatabase = require("../mocks/mockDatabase");
     return {
         database: mockDatabase,
     };
 });
 
 // Jest to mock authroised update.
-jest.mock("../auth", () => {
+jest.mock("../utils/auth", () => {
     return jest.fn(() => Promise.resolve("mockValidToken"));
 });
 

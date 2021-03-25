@@ -1,7 +1,5 @@
-const request = require("supertest");
-const app = require("./app");
 const admin = require("firebase-admin");
-const authorise = require("./auth");
+const authorise = require("../utils/auth");
 const token = "MyToken";
 
 const validBearerToken = {
@@ -22,10 +20,10 @@ const {
     mockUid,
     invalidEmailErrorMessage,
     UnauthorizedErrorMessage,
-} = require("./test_utils/mocks/mockFirebase");
+} = require("../mocks/mockFirebase");
 
 jest.mock("firebase-admin", () => {
-    const { mockFirebase } = require("./test_utils/mocks/mockFirebase");
+    const { mockFirebase } = require("../mocks/mockFirebase");
     return mockFirebase;
 });
 

@@ -1,7 +1,6 @@
-let NZGmt = 13;
-let todaysDate = new Date();
-todaysDate.setHours(todaysDate.getHours() + NZGmt);
-todaysDate = todaysDate.toISOString().slice(0, 10);
+const getTodaysDate = require("../utils/date-helper");
+
+let todaysDate = getTodaysDate()
 
 const mockToDoListData = [
     {

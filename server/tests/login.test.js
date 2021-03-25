@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 const firebase = require("firebase");
-const database = require("./../firebase").database;
+const database = require("../firebase").database;
 
 const {
     shortPasswordErrorMessage,
@@ -9,15 +9,15 @@ const {
     mockUid,
     invalidEmailErrorMessage,
     unauthorizedEmailPasswordMessage,
-} = require("../test_utils/mocks/mockFirebase");
+} = require("../mocks/mockFirebase");
 
 jest.mock("firebase", () => {
-    const { mockFirebase } = require("../test_utils/mocks/mockFirebase");
+    const { mockFirebase } = require("../mocks/mockFirebase");
     return mockFirebase;
 });
 
-jest.mock("./../firebase", () => {
-    const mockDatabase = require("../test_utils/mocks/mockDatabase");
+jest.mock("../firebase", () => {
+    const mockDatabase = require("../mocks/mockDatabase");
     return {
         database: mockDatabase,
     };

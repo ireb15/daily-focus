@@ -1,9 +1,8 @@
 const { database } = require("../firebase");
-const authorise = require("../auth");
-var express = require('express');
+const authorise = require("../utils/auth");
+var express = require("express");
 var router = express.Router();
-
-var uuid = require("uuid");
+const uuid = require("uuid");
 
 // Helper method: Used to sort entryArray by GET API.
 function sortByDateTime(a, b) {
@@ -25,7 +24,7 @@ router.get("/", async function (req, res, next) {
     let entryArray = [];
     const NZGmt = 13;
     let todaysDate = new Date();
-    let userId = await authorise(req);
+    const userId = await authorise(req);
 
     if (userId === "") {
         return res.status(401).send("Unauthorised user.");
@@ -44,6 +43,7 @@ router.get("/", async function (req, res, next) {
         })
         .catch((error) => {
             res.send(error);
+            return;
         });
 
     entryArray.sort((a, b) => {
@@ -52,6 +52,7 @@ router.get("/", async function (req, res, next) {
 
     todaysDate.setHours(todaysDate.getHours() + NZGmt);
     todaysDate = todaysDate.toISOString().slice(0, 10);
+    console.log(todaysDate);
 
     if (req.query.timeline === "today") {
         let todaysItems = entryArray.filter((item) => {
@@ -81,10 +82,8 @@ router.get("/", async function (req, res, next) {
     }
 });
 
-
 /* POST new todo entry */
-router.post("/", async function(req, res, next) {
-
+router.post("/", async function (req, res, next) {
     let entryArray = [];
     let newEntry = req.body;
 
@@ -117,7 +116,7 @@ router.post("/", async function(req, res, next) {
 
     // Set uuid for new entry
     newEntry.entry_id = uuid.v4();
-    
+
     // Add new todolist entry to array
     entryArray.push(newEntry);
 
@@ -127,10 +126,8 @@ router.post("/", async function(req, res, next) {
     res.status(200).send("Successful addition of entry");
 });
 
-
 /* PUT entry update */
-router.put("/", async function(req, res, next) {
-
+router.put("/", async function (req, res, next) {
     let userId = await authorise(req);
     let entryArray = [];
 
@@ -158,7 +155,6 @@ router.put("/", async function(req, res, next) {
             return;
         });
 
-    
     // Go through current array to find and update the entry that was changed
     entryArray.forEach((element) => {
         if (element.entry_id == req.body.entry_id) {
@@ -169,11 +165,10 @@ router.put("/", async function(req, res, next) {
     });
 
     // Write this updated list back to the database.
-    await newFunction(userId).child("todolist").set(entryArray);
+    await database.ref().child(userId).child("todolist").set(entryArray);
 
     res.status(200).send("Successful Update");
 });
-
 
 /* DELETE todo list entry*/
 router.delete("/", async function (req, res, next) {
@@ -216,9 +211,4 @@ router.delete("/", async function (req, res, next) {
     res.status(200).send("Successful deletion");
 });
 
-
 module.exports = router;
-
-function newFunction(userId) {
-    return database.ref().child(userId);
-}
