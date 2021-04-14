@@ -7,6 +7,7 @@ var indexRouter = require("./routes/index");
 var todoRouter = require("./routes/todo");
 var loginRouter = require("./routes/login");
 var signupRouter = require("./routes/signup");
+var verifyTokenRouter = require("./routes/verifyToken");
 var cors = require('cors');
 
 var app = express();
@@ -16,7 +17,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
 // use cors before all route definitions
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -29,7 +30,7 @@ app.use("/", indexRouter);
 app.use("/todo", todoRouter);
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
-
+app.use("/verifyToken", verifyTokenRouter);
 
 // error handler
 app.use(function (err, req, res, next) {
