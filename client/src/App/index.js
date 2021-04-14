@@ -3,7 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "../components/PrivateRoute";
 import "./style.css";
 
 function App() {

@@ -8,7 +8,8 @@ import { Redirect, Route } from "react-router-dom";
  * @param rest The rest of the component props
  */
 export default function PrivateRoute({ component: Component, ...rest }) {
-    const { currentUser } = useContext(/* token? */);
+    // const { currentUser } = useContext(/* token? */);
+    const { currentUser } = "abc";
 
     return (
         <Route
