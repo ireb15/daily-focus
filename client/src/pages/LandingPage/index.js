@@ -1,7 +1,5 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core";
+import React, { useState, Fragment } from "react";
+import { Button, makeStyles, Snackbar, TextField } from "@material-ui/core";
 import { useHistory, Link } from "react-router-dom";
 
 import FocusLogo from "../../images/focus-logo.svg";
@@ -34,6 +32,62 @@ const useStyles = makeStyles({
 export default function LandingPage() {
     const classes = useStyles();
     const history = useHistory();
+    const [signupMsgboxOpen, setSignupMsgboxOpen] = useState(false);
+    const [signupMsg, setSignupMsg] = useState("Sign up failed, please try again later");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const fetchSignup = (username, password) => {
+        console.log(username);
+        console.log(password);
+        let signupSuccess = true;
+        fetch("http://localhost:9000/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: username,
+                password: password,
+            }),
+            referrerPolicy: "no-referrer",
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    signupSuccess = false;
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // Signup unsuccessful
+                if (!signupSuccess && data.message) {
+                    setSignupMsg(data.message);
+                    setSignupMsgboxOpen(true);
+                    return Promise.reject("Server returned non-200 response");
+                }
+
+                // Signup successful
+                console.log(data);
+                setSignupMsg("Sign up succesful");
+                setSignupMsgboxOpen(true);
+                history.push("/login");
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
+    const submitSignup = (e) => {
+        e.preventDefault();
+        fetchSignup(email, password);
+    };
+
+    const handleSignupMsgboxClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setSignupMsgboxOpen(false);
+    };
 
     return (
         <div className={styles.page}>
@@ -48,37 +102,55 @@ export default function LandingPage() {
                 </div>
                 <div className={styles.signUpContainer}>
                     <h1>Create new account!</h1>
+                    <form onSubmit={submitSignup}>
+                        <TextField
+                            style={{ paddingBottom: 20 }}
+                            classes={{ root: classes.root }}
+                            fullWidth
+                            id="outlined-basic"
+                            variant="outlined"
+                            label="Email address"
+                            value={email}
+                            onInput={(e) => setEmail(e.target.value)}
+                        />
 
-                    <TextField
-                        style={{ paddingBottom: 20 }}
-                        classes={{ root: classes.root }}
-                        fullWidth
-                        id="outlined-basic"
-                        variant="outlined"
-                        label="Email address"
-                    />
+                        <TextField
+                            style={{ paddingBottom: 20 }}
+                            classes={{ root: classes.root }}
+                            fullWidth
+                            id="outlined-basic"
+                            variant="outlined"
+                            label="Password"
+                            value={password}
+                            onInput={(e) => setPassword(e.target.value)}
+                        />
 
-                    <TextField
-                        style={{ paddingBottom: 20 }}
-                        classes={{ root: classes.root }}
-                        fullWidth
-                        id="outlined-basic"
-                        variant="outlined"
-                        label="Password"
-                    />
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        classes={{ root: classes.buttonRoot, label: classes.label }}
-                        onClick={() => history.push("/home")}
-                    >
-                        Sign Up
-                    </Button>
-
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            classes={{ root: classes.buttonRoot, label: classes.label }}
+                        >
+                            Sign Up
+                        </Button>
+                    </form>
                     <Link to="/login">Already have an account? Sign in</Link>
                 </div>
             </div>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                open={signupMsgboxOpen}
+                autoHideDuration={5000}
+                message={signupMsg}
+                onClose={handleSignupMsgboxClose}
+                action={
+                    <Fragment>
+                        <Button color="inherit" size="small" onClick={handleSignupMsgboxClose}>
+                            CLOSE
+                        </Button>
+                    </Fragment>
+                }
+            />
         </div>
     );
 }
