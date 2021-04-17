@@ -7,7 +7,7 @@ const { body, validationResult } = require('express-validator');
 // Conditions for validating user data
 const userCreationValidators = [
     body('email').isEmail(),
-    body('password').notEmpty()
+    body('password').isLength({ min: 6 })
 ];
 
 /* Endpoint to handle signing up */
