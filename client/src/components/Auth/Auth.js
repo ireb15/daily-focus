@@ -42,7 +42,3 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
-
-AuthProvider.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
-};

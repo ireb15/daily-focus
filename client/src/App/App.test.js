@@ -6,6 +6,7 @@ import App from ".";
 import LandingPage from "../pages/LandingPage";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
+import PrivateRoute from "../components/PrivateRoute";
 
 let component;
 
@@ -28,5 +29,5 @@ test("it contains a login page", () => {
 });
 
 test("it contains a home page", () => {
-    expect(component.find(HomePage)).toHaveLength(1);
+    expect(component.find(PrivateRoute).prop("component")).toBe(HomePage);
 });
