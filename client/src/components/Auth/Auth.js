@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
     const checkAuth = () =>
         axios({
             method: "post",
@@ -18,20 +19,16 @@ export const AuthProvider = ({ children }) => {
             headers: { authorization: token },
         })
             .then((response) => {
-                console.log(response);
                 if (response.status === 200) {
                     setIsAuthenticated(true);
                 }
             })
-            .catch((error) => {
-                alert(error);
-                setIsAuthenticated(false);
-            })
+            .catch(() => setIsAuthenticated(false))
             .then(() => setIsLoading(false));
 
     useEffect(() => {
         checkAuth();
-    });
+    }, []);
 
     return (
         <AuthContext.Provider
