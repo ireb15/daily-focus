@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import createPersistedState from "use-persisted-state";
 import axios from "axios";
 
