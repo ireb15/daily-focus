@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Redirect, Route } from "react-router-dom";
-import createPersistedState from "use-persisted-state";
-import axios from "axios";
+import { AuthContext } from "./Auth/Auth";
 
 /**
  * This component masks the specified route to users that are not authenticated through
@@ -12,39 +11,21 @@ import axios from "axios";
  * @param rest The rest of the component props
  */
 export default function PrivateRoute({ component: Component, ...rest }) {
-    const [authenticated, setAuthenticated] = useState(undefined);
-
-    const useTokenState = createPersistedState("token");
-    const [token] = useTokenState();
-
-    useEffect(() => {
-        async function verifyToken() {
-            const result = await axios({
-                method: "post",
-                url: "http://localhost:9000/verifyToken",
-                headers: { authorization: token },
-            }).then((response) => {
-                console.log(response);
-                if (response.status === 200) {
-                    return true;
-                }
-                return false;
-            });
-            console.log("result: " + result);
-            return result;
-        }
-        setAuthenticated(verifyToken());
-    }, [token]);
-
-    if (authenticated === undefined) {
-        return <>authenticating...</>;
-    }
+    const { isAuthenticated, isLoading } = useContext(AuthContext);
 
     return (
         <Route
             {...rest}
             render={(routeProps) =>
-                authenticated ? <Component {...routeProps} /> : <Redirect to="/" />
+                !isLoading ? (
+                    isAuthenticated ? (
+                        <Component {...routeProps} />
+                    ) : (
+                        <Redirect to="/" />
+                    )
+                ) : (
+                    <p>Loading</p>
+                )
             }
         />
     );
