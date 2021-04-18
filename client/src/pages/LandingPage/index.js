@@ -33,7 +33,7 @@ export default function LandingPage() {
     const classes = useStyles();
     const history = useHistory();
     const [signupMsgboxOpen, setSignupMsgboxOpen] = useState(false);
-    const [signupMsg, setSignupMsg] = useState("Sign up failed, please try again later");
+    const [signupMsg, setSignupMsg] = useState("Sign up failed, invalid Email address or password");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -60,8 +60,13 @@ export default function LandingPage() {
             })
             .then((data) => {
                 // Signup unsuccessful
-                if (!signupSuccess && data.message) {
-                    setSignupMsg(data.message);
+                console.log(data);
+                if (!signupSuccess) {
+                    if (data.message) {
+                        setSignupMsg(data.message);
+                    } else {
+                        setSignupMsg("Sign up failed, invalid Email address or password");
+                    }
                     setSignupMsgboxOpen(true);
                     return Promise.reject("Server returned non-200 response");
                 }
