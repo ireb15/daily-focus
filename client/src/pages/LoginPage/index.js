@@ -44,7 +44,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginErrorOpen, setloginErrorOpen] = useState(false);
-    const [token, setToken] = useTokenState();
+    const [, setToken] = useTokenState();
 
     const classes = useStyles();
     const history = useHistory();
@@ -70,7 +70,7 @@ const LoginPage = () => {
                 }
             })
             .then((data) => {
-                setToken(data.token);
+                setToken("Bearer " + data.token);
                 history.push("/home");
             })
             .catch((e) => {
