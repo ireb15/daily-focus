@@ -8,6 +8,7 @@ const {
     mockUid,
     invalidEmailErrorMessage,
 } = require("../mocks/mockFirebase");
+const { token } = require("morgan");
 
 jest.mock("firebase", () => {
     const { mockFirebase } = require("../mocks/mockFirebase");
@@ -36,6 +37,32 @@ const invalidEmailInput = {
     password: "123456",
 };
 
+mockToken = {
+    "message": "The email address is already in use by another account."
+};
+
+shortPasswordErrorMessage = {
+    "errors": [
+        {
+            "value": "12345",
+            "msg": "Invalid value",
+            "param": "password",
+            "location": "body"
+        }
+    ]
+};
+
+invalidEmailErrorMessage = {
+    "errors": [
+        {
+            "value": "",
+            "msg": "Invalid value",
+            "param": "email",
+            "location": "body"
+        }
+    ]
+};
+
 describe("signup user endpoint  ", () => {
     afterEach(() => {
         jest.clearAllMocks();
@@ -47,7 +74,8 @@ describe("signup user endpoint  ", () => {
             .set("Accept", "application/json")
             .send(validPasswordAndEmailInput);
 
-        expect(response.status).toBe(201);
+        // Tests validation
+        expect(response.status).toEqual(201);
         expect(response.body).toEqual(mockToken);
 
         //tests firebase method calls for creating a user
@@ -72,7 +100,8 @@ describe("signup user endpoint  ", () => {
             .set("Accept", "application/json")
             .send(invalidPasswordInput);
 
-        expect(response.status).toBe(400);
+        // Tests validation
+        expect(response.status).toEqual(400);
         expect(response.body).toEqual(shortPasswordErrorMessage);
 
         //tests firebase method calls for creating a user
@@ -92,7 +121,8 @@ describe("signup user endpoint  ", () => {
             .set("Accept", "application/json")
             .send(invalidEmailInput);
 
-        expect(response.status).toBe(400);
+        // Tests express validation
+        expect(response.status).toEqual(400);
         expect(response.body).toEqual(invalidEmailErrorMessage);
 
         //tests firebase method calls for creating a user
